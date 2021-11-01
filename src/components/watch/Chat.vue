@@ -10,13 +10,13 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .chat {
   height: 100%;
   flex: 1;
+  flex-shrink: 0;
   margin: 10px;
   width: 300px;
-  flex-shrink: 0;
   margin-left: 0;
   background: var(--card-color);
   border-radius: 8px;

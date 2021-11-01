@@ -4,28 +4,46 @@ export interface User {
   id: string;
 }
 
-interface RoomDetails {
+interface Room {
   participants: User[];
-  creatorId: string;
+  creatorId: string | null;
 }
 
-const state = ref({ participants: [] as User[], creatorId: "" });
+const state = ref({
+  me: null as null | User,
+  room: {
+    participants: [],
+    creatorId: null,
+  } as Room,
+});
 
-function setRoomDetails(payload: RoomDetails): void {
-  state.value.participants = payload.participants;
-  state.value.creatorId = payload.creatorId;
+function setRoom(payload: Room): void {
+  state.value.room.participants = payload.participants;
+  state.value.room.creatorId = payload.creatorId;
+}
+function setMe(payload: User) {
+  state.value.me = payload;
 }
 
 function addUser(userId: string): void {
-  state.value.participants.push({ id: userId });
+  state.value.room.participants.push({ id: userId });
 }
 function removeUser(userId: string): void {
-  state.value.participants = state.value.participants.filter(
+  state.value.room.participants = state.value.room.participants.filter(
     (user) => user.id !== userId
   );
 }
 
-const getParticipants = computed(() => state.value.participants);
-const getCreatorId = computed(() => state.value.creatorId);
+const getParticipants = computed(() => state.value.room.participants);
+const getCreatorId = computed(() => state.value.room.creatorId);
+const getMe = computed(() => state.value.me);
 
-export { getParticipants, getCreatorId, setRoomDetails, addUser, removeUser };
+export {
+  getParticipants,
+  getCreatorId,
+  setRoom,
+  addUser,
+  removeUser,
+  setMe,
+  getMe,
+};

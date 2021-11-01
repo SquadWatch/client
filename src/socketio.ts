@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 import router from "./router";
 import { setAxios } from "./services/axios";
 import { createUser } from "./services/users";
-import { addUser, removeUser, setRoomDetails, User } from "./store/store";
+import { addUser, removeUser, setMe, setRoom, User } from "./store/store";
 export const socket = io("localhost:80", {
   autoConnect: false,
   transports: ["websocket"],
@@ -28,8 +28,9 @@ interface RoomDetails {
   creatorId: string;
 }
 
-socket.on("ROOM_DETAILS", (roomDetails: RoomDetails) => {
-  setRoomDetails(roomDetails);
+socket.on("DETAILS", (details: { room: RoomDetails; me: User }) => {
+  setRoom(details.room);
+  setMe(details.me);
 });
 socket.on("USER_JOIN", (payload: { userId: string }) => {
   addUser(payload.userId);

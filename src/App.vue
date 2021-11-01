@@ -29,4 +29,18 @@ body,
   background: var(--background-color);
   color: white;
 }
+::-webkit-scrollbar {
+  width: 6px;
+  left: -100px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
 </style>

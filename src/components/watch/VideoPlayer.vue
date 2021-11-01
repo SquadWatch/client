@@ -2,7 +2,7 @@
   <div class="video-player"></div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .video-player {
   height: 100%;
   flex: 1;

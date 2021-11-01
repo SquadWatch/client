@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .playlist {
   margin: 10px;
   width: 300px;
