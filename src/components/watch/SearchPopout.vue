@@ -11,7 +11,11 @@
           @click="channelClicked(item)"
           :item="item"
         />
-        <SearchVideoTemplate v-if="item.type === 'video'" :item="item" />
+        <SearchVideoTemplate
+          @click="queueVideo(item)"
+          v-if="item.type === 'video'"
+          :item="item"
+        />
       </template>
     </div>
   </div>
@@ -24,10 +28,12 @@ import {
   onBeforeUnmount,
   watch,
   ref,
+  isRuntimeOnly,
 } from "@vue/runtime-core";
 
 import SearchVideoTemplate from "./SearchVideoTemplate.vue";
 import SearchChannelTemplate from "./SearchChannelTemplate.vue";
+import { socket } from "@/socketio";
 
 export default defineComponent({
   components: { SearchVideoTemplate, SearchChannelTemplate },
@@ -47,6 +53,11 @@ export default defineComponent({
     const channelClicked = (item: SearchResponse) => {
       instant = true;
       context.emit("changeSearch", "channel:" + item.channel.id);
+    };
+
+    const queueVideo = (item: SearchResponse) => {
+      context.emit("hideSearch");
+      socket.emit("QUEUE_VIDEO", { videoId: item.video?.id });
     };
 
     const fetchSearches = () => {
@@ -80,7 +91,7 @@ export default defineComponent({
       searchTimeout && clearTimeout(searchTimeout);
     });
     watch(() => props.search, onSearchInput);
-    return { results, channelClicked, isSearching };
+    return { results, channelClicked, isSearching, queueVideo };
   },
 });
 </script>

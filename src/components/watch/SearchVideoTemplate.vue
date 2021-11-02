@@ -8,6 +8,10 @@
         {{ viewCount }} views • {{ item?.video?.uploadDate }}
       </div>
     </div>
+    <!-- <div class="buttons">
+      <div class="button">Add to queue</div>
+      <div class="button">Play now</div>
+    </div> -->
   </div>
 </template>
 
@@ -43,6 +47,7 @@ export default defineComponent({
     border: solid 1px rgba(255, 255, 255, 0.3);
     background-color: rgba(255, 255, 255, 0.1);
   }
+  position: relative;
 }
 .title {
   font-size: 16px;
@@ -57,6 +62,10 @@ export default defineComponent({
   margin-top: 5px;
   font-size: 14px;
   opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 270px;
+  text-overflow: ellipsis;
 }
 .views {
   font-size: 14px;
@@ -68,5 +77,15 @@ export default defineComponent({
   height: 100%;
   flex-shrink: 0;
   border-radius: 8px;
+}
+.buttons {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  right: 0;
+  .button {
+    padding: 5px;
+    border-radius: 4px;
+  }
 }
 </style>

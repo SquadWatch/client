@@ -9,9 +9,11 @@
         placeholder="Search Videos"
       />
       <SearchPopout
+        v-show="!hideSearch"
         v-if="search.trim() !== ''"
         :search="search"
         @changeSearch="search = $event"
+        @hideSearch="hideSearch = true"
       />
     </div>
   </div>
@@ -24,9 +26,23 @@ export default defineComponent({
   data() {
     return {
       search: "",
+      hideSearch: false,
     };
   },
   components: { SearchPopout },
+  methods: {
+    onGlobalClick(event: any) {
+      const search = event.target.closest(".search");
+      const popout = event.target.closest(".search-popout");
+      this.hideSearch = !(search || popout);
+    },
+  },
+  mounted() {
+    document.addEventListener("mousedown", this.onGlobalClick);
+  },
+  beforeUnmount() {
+    document.removeEventListener("mousedown", this.onGlobalClick);
+  },
 });
 </script>
 
