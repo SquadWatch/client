@@ -1,12 +1,16 @@
+import { Video } from "@/services/search";
+import { NowPlaying } from "@/socketio";
+import { objectToString } from "@vue/shared";
 import { ref, computed } from "vue";
 
 export interface User {
   id: string;
 }
 
-interface Room {
+export interface Room {
   participants: User[];
   creatorId: string | null;
+  nowPlaying: NowPlaying
 }
 
 const state = ref({
@@ -14,10 +18,15 @@ const state = ref({
   room: {
     participants: [],
     creatorId: null,
+    nowPlaying: {
+      skipped: 0,
+      startedTimestamp: null,
+      video: null,
+    },
   } as Room,
 });
 
-function setRoom(payload: Room): void {
+function setRoom(payload: any): void {
   state.value.room.participants = payload.participants;
   state.value.room.creatorId = payload.creatorId;
 }
@@ -34,10 +43,16 @@ function removeUser(userId: string): void {
   );
 }
 
+
+function updateNowPlaying(update: Partial<NowPlaying>) {
+  Object.assign(state.value.room.nowPlaying, update);
+} 
+
 const getParticipants = computed(() => state.value.room.participants);
 const getCreatorId = computed(() => state.value.room.creatorId);
 const getMe = computed(() => state.value.me);
 
+const getNowPlaying = computed(() => state.value.room.nowPlaying)
 export {
   getParticipants,
   getCreatorId,
@@ -46,4 +61,6 @@ export {
   removeUser,
   setMe,
   getMe,
+  updateNowPlaying,
+  getNowPlaying
 };

@@ -21,7 +21,7 @@ export default defineComponent({
   },
   setup(props) {
     const viewCount = computed(() =>
-      props.item?.video?.viewCount.toLocaleString()
+      props.item?.viewCount.toLocaleString()
     );
     return { viewCount };
   },

@@ -57,7 +57,7 @@ export default defineComponent({
 
     const queueVideo = (item: SearchResponse) => {
       context.emit("hideSearch");
-      socket.emit("QUEUE_VIDEO", { videoId: item.video?.id });
+      socket.emit("QUEUE_VIDEO", { videoId: item.id });
     };
 
     const fetchSearches = () => {

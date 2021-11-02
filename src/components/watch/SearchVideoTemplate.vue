@@ -1,17 +1,15 @@
 <template>
   <div class="video-template">
-    <img :src="item?.video?.thumbnailURL" class="thumbnail" />
+    <img :src="item?.thumbnailURL" class="thumbnail" />
     <div class="details">
-      <div class="title">{{ item?.video?.title }}</div>
+      <div class="title">{{ item?.title }}</div>
       <div class="channel-name">{{ item?.channel.name }}</div>
-      <div class="views">
-        {{ viewCount }} views • {{ item?.video?.uploadDate }}
-      </div>
+      <div class="views">{{ viewCount }} views • {{ item?.uploadDate }}</div>
     </div>
     <!-- <div class="buttons">
       <div class="button">Add to queue</div>
       <div class="button">Play now</div>
-    </div> -->
+    </div>-->
   </div>
 </template>
 
@@ -26,7 +24,7 @@ export default defineComponent({
   },
   setup(props) {
     const viewCount = computed(() =>
-      props.item?.video?.viewCount.toLocaleString()
+      props.item?.viewCount.toLocaleString()
     );
     return { viewCount };
   },
