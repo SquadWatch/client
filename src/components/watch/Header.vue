@@ -8,7 +8,11 @@
         v-model="search"
         placeholder="Search Videos"
       />
-      <SearchPopout v-if="search.trim() !== ''" :search="search" />
+      <SearchPopout
+        v-if="search.trim() !== ''"
+        :search="search"
+        @changeSearch="search = $event"
+      />
     </div>
   </div>
 </template>

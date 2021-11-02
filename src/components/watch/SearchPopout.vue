@@ -1,16 +1,24 @@
 <template>
   <div class="search-popout">
-    <div class="tabs">
-      <div class="tab selected">Videos</div>
-      <div class="tab">Channels</div>
-    </div>
-    <div class="search-area">
-      <div v-if="!results">Searching...</div>
+    <div class="searching" v-if="isSearching">Searching...</div>
+    <div class="list" v-if="!isSearching">
+      <template
+        v-for="item in results"
+        :key="item.video?.id || item.channel.id"
+      >
+        <SearchChannelTemplate
+          v-if="item.type === 'channel'"
+          @click="channelClicked(item)"
+          :item="item"
+        />
+        <SearchVideoTemplate v-if="item.type === 'video'" :item="item" />
+      </template>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { SearchResponse, search } from "@/services/search";
 import {
   defineComponent,
   onBeforeUnmount,
@@ -18,34 +26,61 @@ import {
   ref,
 } from "@vue/runtime-core";
 
+import SearchVideoTemplate from "./SearchVideoTemplate.vue";
+import SearchChannelTemplate from "./SearchChannelTemplate.vue";
+
 export default defineComponent({
+  components: { SearchVideoTemplate, SearchChannelTemplate },
   props: {
     search: {
       type: String,
       required: true,
     },
   },
-  setup(props) {
+  setup(props, context) {
     let searchTimeout: null | number = null;
-    let results = ref(null);
+    let results = ref<SearchResponse[] | null>(null);
+    let isSearching = ref(false);
+    let startValue = null as null | string;
+    let instant = false;
+
+    const channelClicked = (item: SearchResponse) => {
+      instant = true;
+      context.emit("changeSearch", "channel:" + item.channel.id);
+    };
 
     const fetchSearches = () => {
-      console.log("fetch");
+      isSearching.value = true;
+      search(props.search).then((res) => {
+        isSearching.value = false;
+        results.value = res.data;
+      });
     };
-    onBeforeUnmount(() => {
-      searchTimeout && clearTimeout(searchTimeout);
-    });
-    const onSearchInput = () => {
+    const onSearchInput = (_newVal: string, oldVal: string) => {
+      if (instant) {
+        instant = false;
+        fetchSearches();
+        return;
+      }
+      !startValue && (startValue = oldVal);
       if (searchTimeout) {
         clearTimeout(searchTimeout);
         searchTimeout = null;
       }
       searchTimeout = setTimeout(() => {
-        fetchSearches();
+        if (startValue !== props.search) {
+          fetchSearches();
+        }
+        searchTimeout = null;
+        startValue = null;
       }, 1000);
     };
+
+    onBeforeUnmount(() => {
+      searchTimeout && clearTimeout(searchTimeout);
+    });
     watch(() => props.search, onSearchInput);
-    return { results };
+    return { results, channelClicked, isSearching };
   },
 });
 </script>
@@ -62,49 +97,20 @@ export default defineComponent({
   width: 500px;
   height: 500px;
   border-radius: 8px;
-  padding: 10px;
 }
 
-.tabs {
-  display: flex;
-  gap: 10px;
-  .tab {
-    display: flex;
-    padding-bottom: 8px;
-    border-bottom: solid 5px transparent;
-    cursor: pointer;
-    user-select: none;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255, 255, 255, 0.6);
-    &:before {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      height: 5px;
-      width: 20px;
-      border-radius: 10px;
-      background: transparent;
-    }
-    &:hover {
-      &:before {
-        background: rgba(255, 255, 255, 0.3);
-      }
-    }
-    &.selected {
-      color: white;
-      &:before {
-        background: white;
-      }
-    }
-  }
-}
-.search-area {
+.searching {
   display: flex;
   height: 100%;
   width: 100%;
   justify-content: center;
   align-items: center;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: auto;
+  padding: 10px;
 }
 </style>

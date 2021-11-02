@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .video-details {
   margin: 10px;
   margin-top: 0;
