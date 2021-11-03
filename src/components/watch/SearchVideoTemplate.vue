@@ -23,9 +23,7 @@ export default defineComponent({
     item: Object as PropType<SearchResponse>,
   },
   setup(props) {
-    const viewCount = computed(() =>
-      props.item?.viewCount.toLocaleString()
-    );
+    const viewCount = computed(() => props.item?.viewCount?.toLocaleString());
     return { viewCount };
   },
 });

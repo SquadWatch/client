@@ -2,6 +2,7 @@
   <div class="search-popout">
     <div class="searching" v-if="isSearching">Searching...</div>
     <div class="list" v-if="!isSearching">
+      <div>showingList</div>
       <template
         v-for="item in results"
         :key="item.video?.id || item.channel.id"

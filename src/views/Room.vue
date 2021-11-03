@@ -2,12 +2,12 @@
   <div class="watch">
     <Header />
     <div class="container">
-      <Playlist />
-      <div class="main">
+      <Playlist v-if="showPlaylist" />
+      <div class="main" id="main-area">
         <VideoPlayer />
         <VideoDetails />
       </div>
-      <div class="left-area">
+      <div class="right-area">
         <Participants />
         <Chat />
       </div>
@@ -24,6 +24,7 @@ import Participants from "@/components/watch/Participants.vue";
 import Chat from "@/components/watch/Chat.vue";
 import Playlist from "@/components/watch/Playlist.vue";
 import { socket } from "@/socketio";
+import { getShowPlaylist } from "@/store/store";
 
 export default defineComponent({
   components: {
@@ -41,6 +42,11 @@ export default defineComponent({
     };
     if (!socket.connected) socket.connect();
   },
+  computed: {
+    showPlaylist() {
+      return getShowPlaylist.value;
+    },
+  },
 });
 </script>
 
@@ -55,15 +61,18 @@ export default defineComponent({
   display: flex;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 .main {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
-.left-area {
+.right-area {
   display: flex;
   flex-direction: column;
+  margin-left: 5px;
 }
 </style>

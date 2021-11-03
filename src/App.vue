@@ -43,4 +43,11 @@ body,
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.6);
 }
+a {
+  color: white;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
 </style>

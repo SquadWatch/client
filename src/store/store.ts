@@ -10,7 +10,7 @@ export interface User {
 export interface Room {
   participants: User[];
   creatorId: string | null;
-  nowPlaying: NowPlaying
+  nowPlaying: NowPlaying;
 }
 
 const state = ref({
@@ -24,6 +24,7 @@ const state = ref({
       video: null,
     },
   } as Room,
+  showPlaylist: true,
 });
 
 function setRoom(payload: any): void {
@@ -43,16 +44,20 @@ function removeUser(userId: string): void {
   );
 }
 
+function toggleShowPlaylist() {
+  state.value.showPlaylist = !state.value.showPlaylist;
+}
 
 function updateNowPlaying(update: Partial<NowPlaying>) {
   Object.assign(state.value.room.nowPlaying, update);
-} 
+}
 
 const getParticipants = computed(() => state.value.room.participants);
 const getCreatorId = computed(() => state.value.room.creatorId);
 const getMe = computed(() => state.value.me);
+const getShowPlaylist = computed(() => state.value.showPlaylist);
 
-const getNowPlaying = computed(() => state.value.room.nowPlaying)
+const getNowPlaying = computed(() => state.value.room.nowPlaying);
 export {
   getParticipants,
   getCreatorId,
@@ -62,5 +67,7 @@ export {
   setMe,
   getMe,
   updateNowPlaying,
-  getNowPlaying
+  getNowPlaying,
+  toggleShowPlaylist,
+  getShowPlaylist,
 };

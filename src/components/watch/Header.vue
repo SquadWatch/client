@@ -1,6 +1,8 @@
 <template>
   <div class="header">
-    <div class="button playlist">Hide Playlist (0)</div>
+    <div class="button playlist" @click="togglePlaylist">
+      {{ showPlaylist ? "Hide" : "Show" }} Playlist (0)
+    </div>
     <div class="search-area">
       <input
         class="search"
@@ -20,6 +22,7 @@
 </template>
 
 <script lang="ts">
+import { getShowPlaylist, toggleShowPlaylist } from "@/store/store";
 import { defineComponent } from "@vue/runtime-core";
 import SearchPopout from "./SearchPopout.vue";
 export default defineComponent({
@@ -35,6 +38,14 @@ export default defineComponent({
       const search = event.target.closest(".search");
       const popout = event.target.closest(".search-popout");
       this.hideSearch = !(search || popout);
+    },
+    togglePlaylist() {
+      toggleShowPlaylist();
+    },
+  },
+  computed: {
+    showPlaylist() {
+      return getShowPlaylist.value;
     },
   },
   mounted() {
