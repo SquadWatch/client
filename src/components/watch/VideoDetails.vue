@@ -33,6 +33,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .video-details {
+  display: flex;
+  flex-direction: column;
   margin: 10px;
   margin-right: 5px;
   margin-top: 0;
@@ -41,6 +43,7 @@ export default defineComponent({
   padding: 10px;
   border: solid 1px rgba(0, 0, 0, 0.5);
   flex: 1;
+  align-items: flex-start;
 }
 .title {
   font-size: 16px;

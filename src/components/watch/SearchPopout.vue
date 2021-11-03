@@ -2,7 +2,6 @@
   <div class="search-popout">
     <div class="searching" v-if="isSearching">Searching...</div>
     <div class="list" v-if="!isSearching">
-      <div>showingList</div>
       <template
         v-for="item in results"
         :key="item.video?.id || item.channel.id"
@@ -102,12 +101,13 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgb(34, 34, 34, 84%);
   border: solid 1px rgba(0, 0, 0, 0.2);
   margin-top: 50px;
   backdrop-filter: blur(10px);
   width: 500px;
   height: 500px;
+  z-index: 1111;
   border-radius: 8px;
 }
 
